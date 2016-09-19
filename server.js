@@ -4,6 +4,7 @@ var app = express();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var path = require('path');
+var socket = require('./app/routes/socket.js');
 
 //Mongoose configuration
 var db = require('./config/db');
