@@ -1,0 +1,23 @@
+{
+  "name": "simple_chat",
+  "description": "Simple chat as a test for a university class",
+  "main": "server.js",
+  "authors": [
+    "Jeries Handal <JeriesHG@Gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.8",
+    "bootstrap": "^3.3.7"
+  }
+}
