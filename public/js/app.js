@@ -1,12 +1,6 @@
-var app = angular.module('chatApp', []);
+var app = angular.module('chatApp', ['btford.socket-io', 'SocketController']);
 
-app.controller("mainController", ['$scope', function($scope) {
-	$scope.user = '';
-
-	$('#userModal').modal('show');
-	
-	$scope.submitName = function() {
-		$('#userModal').modal('hide');
-	}
-}]);
+app.factory('$socket', function (socketFactory) {
+  return socketFactory();
+});
 

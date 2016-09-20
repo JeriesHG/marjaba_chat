@@ -1,47 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<title>Simple Chat</title>
-
-	<!-- CSS -->
-	<link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
-	<!--responsive web design-->
-	<link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
-
-	<script src="libs/angular/angular.min.js"></script>
+  <title>Socket.IO chat</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body ng-app="chatApp">
 
-	<div class="container" ng-controller="mainController">
-		<form ng-submit="submitName()" >
-			<div class="modal fade" tabindex="-1" role="dialog" id="userModal">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h4 class="modal-title">Enter the chat...</h4>
-						</div>
-						<div class="modal-body">
-							<div class="form-group">
-								<label for="user">Name:</label>
-								<input type="text" class="form-control" id="user" name="user" ng-model='user' />
-							</div>
-						</div>
-						<div class="modal-footer">
-							<input type="submit" id="submit3" value="Enter chat" class="btn btn-primary"/>
-						</div>
-					</div><!-- /.modal-content -->
-				</div><!-- /.modal-dialog -->
-			</div><!-- /.modal -->
-		</form>
-	</div>
+  <div ng-controller="socketController">
 
-	<script src="libs/jquery/dist/jquery.min.js"></script>
-	<script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="js/controllers/MainController.js"></script>
-	<script src="js/app.js"></script>
-	
+<ul class="list-group">
+  <li ng-repeat="message in messages" class="list-group-item">{{message}}</li>
+</ul>
+
+   <form ng-submit="sendMessage()">
+
+    <div class="form-group">
+      <input type="text" name="message" ng-model="message" class="form-control" placeholder="Message...">
+      <span class="help-block"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-lg btn-block">
+      <span class="glyphicon glyphicon-flash"></span> Submit!
+    </button>
+  </form>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="bower_components/angular-socket-io/socket.min.js"></script>
+<script src="js/controllers/SocketController.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
