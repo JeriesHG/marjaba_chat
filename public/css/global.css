@@ -1,3 +1,14 @@
 .list-box a{
 	width: 50%;
 }
+.private{
+	background-color: #ecf8ff;
+    color: #337AB6;
+}
+.recipient{
+	font-weight: 200;
+}
+.me{
+	background-color: rgb(255, 191, 79);
+    color: white !important;
+}

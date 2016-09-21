@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/chat');
 
 //Get Save Methods
-var UserMethods = require('./app/UserMethods'); 
+var UserMethods = require('./app/UserMethods');
 var userMethods = new UserMethods();
 
 //CONFIGURATIONS
@@ -24,31 +24,51 @@ app.get('*', function(req, res) {
 io.on('connection', function(socket) {
 	console.log('a user connected');
 	// console.log(Object.keys(io.sockets.sockets));
-	userMethods.retrieveModel.find(function(err, users){
-		if(!err){
+	userMethods.retrieveModel.find(function(err, users) {
+		if (!err) {
 			io.emit('load participants', users);
 		}
 	});
 
-	 socket.on('chat message', function(msg){
-	    console.log('message received: ' + msg);
-	    io.emit('chat message', msg);
-	  });
+	socket.on('chat message', function(data) {
 
-	  socket.on('new user', function(msg){
-	  	let user = {
-	  		name : msg,
-	  		socketId : socket.id
-	  	};
+		var mArray = data.message.split(" ");
+		if (mArray.length > 2) {
+			if (mArray[0] === '/w') {
+				mArray.shift();
+				var to = mArray.shift();
+				data.message = mArray.join(" ");
+				data.type = 'private';
+				
+				io.to(data.wSocketId).emit('chat message', data);
+				if(socket.id !== data.wSocketId){
+					data.recipient = "[ to: "+to+" ]";
+					io.to(socket.id).emit('chat message', data);
+				}
+			}else{
+				io.emit('chat message', data);
+			}
+		} else {
+			io.emit('chat message', data);
+		}
 
-	  	userMethods.registerUser(user);
-	    io.emit('new user', msg);
-	    
-	  });
+	});
+
+	socket.on('new user', function(msg) {
+		let user = {
+			name: msg,
+			socketId: socket.id
+		};
+
+		userMethods.registerUser(user);
+		io.emit('new user', user);
+
+	});
 
 	socket.on('disconnect', function() {
 		console.log('user disconnected');
 		userMethods.removeUser(socket.id);
+		io.emit('exit chat', socket.id);
 	});
 });
 

@@ -9,61 +9,69 @@
 
   <div class='container' ng-controller="socketController">
 
+    <form ng-submit="nicknameForm.$valid &amp;&amp; enterChat()" novalidate data-toggle="validator" role="form" name="nicknameForm">
+      <div class="modal fade" tabindex="-1" role="dialog" id="userModal" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false" >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Enter the chat...</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="user">Nickname <label class="small">(Valido: {{nicknameForm.$valid}})</label>:</label>
+                <input type="text" class="form-control" id="user" name="user" autocomplete="off" 
+                 ng-model='user' ng-pattern="/^[a-zA-Z0-9]*$/" ng-trim="false" required/>
+                 <label></label>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input type="submit" id="submit3" value="Enter chat" class="btn btn-primary"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
     <div class="row" >
       <div class="list-group list-box col-md-3">
         <label>Participants: </label>
-        <a ng-repeat = "user in participants" href="#" class="list-group-item">{{user}}</a>
+        <a ng-repeat = "p in participants" href="#" 
+        class="list-group-item" ng-class="{me : p.name === user}"
+        ng-click="sendPrivateMessage($event, p.socketId)">{{p.name}}</a>
       </div>
 
       <div class="list-group col-md-9">
        <label>Messages: </label>
-        <li ng-repeat="m in messages" class="list-group-item"><strong>{{m.sender}}: </strong>{{m.message}}</li>
+       <li ng-repeat="m in messages" class="list-group-item" ng-class="{private : m.type === 'private'}">
+       <strong>{{m.sender}}:</strong>&nbsp;<label class="small recipient">{{m.recipient}}</label>&nbsp;{{m.message}}
+       </li>
+     </div>
+
+
+     <form ng-submit="sendMessage()" data-toggle="validator" role="form">
+      <div class="form-group">
+        <input type="text" name="message" ng-model="message" class="form-control" placeholder="Message..." required>
+        <span class="help-block"></span>
       </div>
 
-      <form ng-submit="enterChat()" data-toggle="validator" role="form">
-        <div class="modal fade" tabindex="-1" role="dialog" id="userModal" data-controls-modal="your_div_id" data-backdrop="static" data-keyboard="false" >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Enter the chat...</h4>
-              </div>
-              <div class="modal-body">
-                <div class="form-group">
-                  <label for="user">Name:</label>
-                  <input type="text" class="form-control" id="user" name="user" ng-model='user' required/>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <input type="submit" id="submit3" value="Enter chat" class="btn btn-primary"/>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-
-        <form ng-submit="sendMessage()" data-toggle="validator" role="form">
-          <div class="form-group">
-            <input type="text" name="message" ng-model="message" class="form-control" placeholder="Message..." required>
-            <span class="help-block"></span>
-          </div>
-
-          <button type="submit" class="btn btn-success btn-lg btn-block">
-            <span class="glyphicon glyphicon-flash"></span> Submit!
-          </button>
-        </form>
-      </div>
-
-
+      <button type="submit" class="btn btn-success btn-lg btn-block">
+        <span class="glyphicon glyphicon-flash"></span> Submit!
+      </button>
+    </form>
   </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="bower_components/angular/angular.min.js"></script>
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="bower_components/angular-socket-io/socket.min.js"></script>
-  <script src="js/controllers/SocketController.js"></script>
-  <script src="js/controllers/UserController.js"></script>
-  <script src="js/app.js"></script>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="bower_components/angular-socket-io/socket.min.js"></script>
+<script src="js/controllers/SocketController.js"></script>
+<script src="js/controllers/UserController.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
