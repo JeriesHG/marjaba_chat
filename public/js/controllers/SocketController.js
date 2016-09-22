@@ -30,7 +30,8 @@ app.controller('socketController', function($scope, $socket) {
 		let messageStruct = {
 			message: $scope.message,
 			sender: $scope.user,
-			wSocketId: $scope.wSocketId
+			wSocketId: $scope.wSocketId,
+			date: new Date()
 		}
 
 		$socket.emit('chat message', messageStruct);

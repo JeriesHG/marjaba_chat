@@ -9,5 +9,6 @@ module.exports = mongoose.model('User', {
 	// },
 	name: String,
 	socketId: String,
+	created : Date,
 	active : Boolean
 });

@@ -23,7 +23,7 @@ app.get('*', function(req, res) {
 //IO CONNECTIONS
 io.on('connection', function(socket) {
 	console.log('a user connected');
-	// console.log(Object.keys(io.sockets.sockets));
+	
 	userMethods.retrieveModel.find(function(err, users) {
 		if (!err) {
 			io.emit('load participants', users);

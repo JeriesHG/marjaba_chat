@@ -8,6 +8,7 @@ module.exports = class UserMethods {
 		var user = new this.User({
 			name: msg.name,
 			socketId: msg.socketId,
+			created : msg.date,
 			active: true
 		});
 
@@ -15,7 +16,7 @@ module.exports = class UserMethods {
 			if (error) {
 				console.log(error);
 			} else {
-				console.log('success');
+				console.log('Registered New User');
 			}
 		});
 	}
@@ -29,7 +30,7 @@ module.exports = class UserMethods {
 						if (error)
 							console.log(error);
 						else
-							console.log("erased");
+							console.log("Erased User");
 					});
 					break;
 				}

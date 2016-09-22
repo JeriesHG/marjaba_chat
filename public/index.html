@@ -67,7 +67,7 @@
               <div class="text" ng-class="m.type === 'private' ? (( m.sender === user) ? 'private privateLeft' : 'private privateRight') : ''">
                 <label class="small recipient">{{m.recipient}}</label>&nbsp;{{m.message}}
               </div>
-              <!-- <div class="time">5 min ago</div> -->
+              <div class="time">{{ m.date | date : 'MMM d, y h:mm:ss a'}}</div>
             </div>
         </div>
         </div>
