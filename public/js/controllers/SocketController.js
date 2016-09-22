@@ -40,7 +40,7 @@ app.controller('socketController', function($scope, $socket) {
 
 	$scope.sendPrivateMessage = function($event, socketId) {
 		let a = angular.element($event.currentTarget);
-		$scope.message = '/w ' + a[0].innerHTML + ' ';
+		$scope.message = '/w ' + a[0].childNodes[3].innerHTML + ' ';
 		$scope.wSocketId = socketId;
 		$("[name='message']").focus();
 	}
