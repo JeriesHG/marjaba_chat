@@ -7,7 +7,10 @@ var path = require('path');
 var mongoose = require('mongoose');
 
 //mongoose
-mongoose.connect('mongodb://ds023435.mlab.com:23435/heroku_k9hwpfn3');
+
+mongoose.connect('mongodb://ds023435.mlab.com:23435/heroku_k9hwpfn3', function(err){
+	if(err) throw err;
+});
 
 //Get Save Methods
 var UserMethods = require('./app/UserMethods');
