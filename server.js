@@ -7,7 +7,7 @@ var path = require('path');
 var mongoose = require('mongoose');
 
 //mongoose
-mongoose.connect('mongodb://localhost/chat');
+mongoose.connect('mongodb://ds023435.mlab.com:23435/heroku_k9hwpfn3');
 
 //Get Save Methods
 var UserMethods = require('./app/UserMethods');
