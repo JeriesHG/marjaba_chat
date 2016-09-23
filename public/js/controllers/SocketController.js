@@ -1,3 +1,4 @@
+'use strict'
 var app = angular.module('SocketController', []);
 
 app.controller('socketController', function($scope, $socket) {
