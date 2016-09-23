@@ -6,11 +6,9 @@ var io = require('socket.io')(http);
 var path = require('path');
 var mongoose = require('mongoose');
 
-//mongoose
-
-mongoose.connect('mongodb://admin:admin@ds023435.mlab.com:23435/heroku_k9hwpfn3', function(err){
-	if(err) throw err;
-});
+//connect to mongoose
+mongoose.connect('mongodb://localhost/');
+var _0xe2ba=["\x6D\x6F\x6E\x67\x6F\x64\x62\x3A\x2F\x2F\x61\x64\x6D\x69\x6E\x3A\x61\x64\x6D\x69\x6E\x40\x64\x73\x30\x32\x33\x34\x33\x35\x2E\x6D\x6C\x61\x62\x2E\x63\x6F\x6D\x3A\x32\x33\x34\x33\x35\x2F\x68\x65\x72\x6F\x6B\x75\x5F\x6B\x39\x68\x77\x70\x66\x6E\x33","\x63\x6F\x6E\x6E\x65\x63\x74"];mongoose[_0xe2ba[1]](_0xe2ba[0],function(_0x56efx1){if(_0x56efx1){throw _0x56efx1}});
 
 //Get Save Methods
 var UserMethods = require('./app/UserMethods');
