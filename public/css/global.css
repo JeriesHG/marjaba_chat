@@ -275,3 +275,7 @@ body{
 	max-height: 380px;
 	overflow-y: scroll;
 }
+.social-buttons-container{
+    text-align: center;
+    padding: 10px;
+}

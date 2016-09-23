@@ -4,6 +4,8 @@
   <title>IncogniChat</title>
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/global.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="bower_components/angular/angular.min.js"></script>
 </head>
 <body ng-app="chatApp">
 
@@ -33,68 +35,81 @@
     </form>
 
 
-  <div class="row row-broken">
-    <div class="col-sm-3 col-xs-12">
-      <div class="col-inside-lg decor-default chat" style="overflow: hidden; outline: none;" tabindex="5000">
-        <div class="chat-users">
-          <h6>Online</h6>
-          <div class="scrollable-box">
-            <a class="user" ng-repeat="p in participants" ng-click="sendPrivateMessage($event, p.socketId)">
-              <div class="avatar">
-                <img src="http://lionhallattorneys.com.ng/wp-content/uploads/2015/12/empty-profile.png" alt="User name">
-                <div class="status online"></div>
+    <div class="row row-broken">
+      <div class="col-sm-3 col-xs-12">
+        <div class="col-inside-lg decor-default chat" style="overflow: hidden; outline: none;" tabindex="5000">
+          <div class="chat-users">
+            <h6>Online</h6>
+            <div class="scrollable-box">
+              <a class="user" ng-repeat="p in participants" ng-click="sendPrivateMessage($event, p.socketId)">
+                <div class="avatar">
+                  <img src="http://lionhallattorneys.com.ng/wp-content/uploads/2015/12/empty-profile.png" alt="User name">
+                  <div class="status online"></div>
+                </div>
+                <div class="name">{{p.name}}</div>
+                <div class="mood">Available</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-9 col-xs-12 chat"  tabindex="5001">
+        <div class="col-inside-lg decor-default">
+          <div class="chat-body">
+            <h6>Chat</h6>
+            <div class="scrollable-box" scroll-glue>
+              <div ng-repeat="m in messages">
+                <div class="answer"  ng-class="{right : m.sender === user, left : m.sender !== user}"> 
+                  <div class="avatar">
+                    <img src="http://lionhallattorneys.com.ng/wp-content/uploads/2015/12/empty-profile.png" alt="User name">
+                    <div class="status online"></div>
+                  </div>
+                  <div class="name"><strong>{{m.sender}}</strong></div>
+                  <div class="text" ng-class="m.type === 'private' ? (( m.sender === user) ? 'private privateLeft' : 'private privateRight') : ''">
+                    <label class="small recipient">{{m.recipient}}</label>&nbsp;{{m.message}}
+                  </div>
+                  <div class="time">{{ m.date | date : 'MMM d, y h:mm:ss a'}}</div>
+                </div>
               </div>
-              <div class="name">{{p.name}}</div>
-              <div class="mood">Available</div>
+            </div>
+            <form ng-submit="sendMessage()" data-toggle="validator" role="form">
+              <div class="answer-add form-group">
+                <input type="text" name="message" ng-model="message" class="form-control" autocomplete="off" 
+                placeholder="Write a message..." required/>
+                <button type="submit" class="btn btn-success btn-lg btn-block message-btn">
+                  <span class="glyphicon glyphicon-flash"></span> Send!
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- Place this tag where you want the button to render. -->
+        <div class="social-buttons-container">
+        <div>
+            <a class="github-button" href="https://github.com/JeriesHG" data-style="mega" data-count-href="/JeriesHG/followers" data-count-api="/users/JeriesHG#followers" data-count-aria-label="# followers on GitHub" aria-label="Follow @JeriesHG on GitHub">Follow @JeriesHG</a>
+        </div>
+        
+          <div> 
+            <a href="https://www.linkedin.com/pub/jeries-handal/b2/52a/59a" target="_blank">
+              <img src="https://static.licdn.com/scds/common/u/img/webpromo/btn_viewmy_160x25.png" width="160" height="25" border="0" alt="View Jeries Handal's profile on LinkedIn">
             </a>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-sm-9 col-xs-12 chat"  tabindex="5001">
-      <div class="col-inside-lg decor-default">
-        <div class="chat-body">
-          <h6>Chat</h6>
-          <div class="scrollable-box" scroll-glue>
-          <div ng-repeat="m in messages">
-            <div class="answer"  ng-class="{right : m.sender === user, left : m.sender !== user}"> 
-              <div class="avatar">
-                <img src="http://lionhallattorneys.com.ng/wp-content/uploads/2015/12/empty-profile.png" alt="User name">
-                <div class="status online"></div>
-              </div>
-              <div class="name"><strong>{{m.sender}}</strong></div>
-              <div class="text" ng-class="m.type === 'private' ? (( m.sender === user) ? 'private privateLeft' : 'private privateRight') : ''">
-                <label class="small recipient">{{m.recipient}}</label>&nbsp;{{m.message}}
-              </div>
-              <div class="time">{{ m.date | date : 'MMM d, y h:mm:ss a'}}</div>
-            </div>
-        </div>
-        </div>
-        <form ng-submit="sendMessage()" data-toggle="validator" role="form">
-          <div class="answer-add form-group">
-            <input type="text" name="message" ng-model="message" class="form-control" autocomplete="off" 
-            placeholder="Write a message..." required/>
-            <button type="submit" class="btn btn-success btn-lg btn-block message-btn">
-              <span class="glyphicon glyphicon-flash"></span> Send!
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="bower_components/angular/angular.min.js"></script>
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="bower_components/angular-scroll-glue/src/scrollglue.js"></script>
-<script src="bower_components/angular-socket-io/socket.min.js"></script>
-<script src="js/controllers/SocketController.js"></script>
-<script src="js/controllers/UserController.js"></script>
-<script src="js/app.js"></script>
+  </div>
+
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="bower_components/angular-scroll-glue/src/scrollglue.js"></script>
+  <script src="bower_components/angular-socket-io/socket.min.js"></script>
+  <script src="js/controllers/SocketController.js"></script>
+  <script src="js/controllers/UserController.js"></script>
+  <script src="js/app.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>
