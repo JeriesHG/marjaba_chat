@@ -9,7 +9,7 @@ module.exports = class UserMethods {
 		var user = new this.User({
 			name: msg.name,
 			socketId: msg.socketId,
-			created : msg.date,
+			created: msg.date,
 			active: true
 		});
 
@@ -24,16 +24,18 @@ module.exports = class UserMethods {
 
 	removeUser(socketId) {
 		this.User.find(function(error, users) {
-			for (var i = 0; i < users.length; i++) {
-				if (users[i].socketId === socketId) {
-					var deleteUser = users[i];
-					deleteUser.remove(function(error, result) {
-						if (error)
-							console.log(error);
-						else
-							console.log("Erased User");
-					});
-					break;
+			if (!error) {
+				for (var i = 0; i < users.length; i++) {
+					if (users[i].socketId === socketId) {
+						var deleteUser = users[i];
+						deleteUser.remove(function(error, result) {
+							if (error)
+								console.log(error);
+							else
+								console.log("Erased User");
+						});
+						break;
+					}
 				}
 			}
 		});
