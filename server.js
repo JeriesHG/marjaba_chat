@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 
 //mongoose
 
-mongoose.connect('mongodb://ds023435.mlab.com:23435/heroku_k9hwpfn3', function(err){
+mongoose.connect('mongodb://admin:admin@ds023435.mlab.com:23435/heroku_k9hwpfn3', function(err){
 	if(err) throw err;
 });
 
