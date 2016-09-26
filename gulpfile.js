@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const livereload = require('gulp-livereload');
@@ -8,6 +9,13 @@ const uglify = require('gulp-uglify');
 const rename = require('gulp-rename');
 const source = require('vinyl-source-stream');
 const streamify = require('gulp-streamify');
+const defaultAssets = require('./config/assets/default');
+const gulpLoadPlugins = require('gulp-load-plugins');
+const plugins = gulpLoadPlugins({
+	rename: {
+		'gulp-angular-templatecache': 'templateCache'
+	}
+});
 
 const paths = {};
 paths.src = {};
@@ -29,6 +37,10 @@ paths.build.sass = dist + 'css/';
 paths.build.images = dist + 'images/';
 paths.build.fonts = dist + 'fonts/';
 
+//===================================================================================
+//==================================== TASKS ==================================
+//===================================================================================
+
 gulp.task('scripts', () => {
 	console.log('Src Scripts : ' + paths.src.scripts);
 	console.log('Dist Scripts : ' + paths.build.scripts);
@@ -47,6 +59,21 @@ gulp.task('scripts', () => {
 		.pipe(streamify(rename({
 			suffix: ".min"
 		})))
+		.pipe(gulp.dest(paths.build.scripts));
+});
+
+// JS minifying task
+gulp.task('uglify', function() {
+	var assets = _.union(
+		defaultAssets.client.lib.js
+	);
+
+	return gulp.src(assets)
+		.pipe(plugins.ngAnnotate())
+		.pipe(plugins.uglify({
+			mangle: false
+		}))
+		.pipe(plugins.concat('libs.min.js'))
 		.pipe(gulp.dest(paths.build.scripts));
 });
 
@@ -70,6 +97,9 @@ gulp.task('server:start', () => {
 });
 gulp.task('server:restart', server.restart);
 
+//===================================================================================
+//==================================== WATCHERS ==================================
+//===================================================================================
 
 gulp.task('watch', () => {
 	livereload.listen();
@@ -85,4 +115,4 @@ gulp.task('watch', () => {
 });
 
 //Tasks
-gulp.task('default', ['scripts', 'sass', 'images', 'server:start', 'watch']);
+gulp.task('default', ['scripts', 'uglify', 'sass', 'images', 'server:start', 'watch']);
