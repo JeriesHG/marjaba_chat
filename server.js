@@ -33,25 +33,30 @@ io.on('connection', function(socket) {
 	socket.on('chat message', function(data) {
 
 		var mArray = data.message.split(" ");
-		if (mArray.length > 2) {
-			if (mArray[0] === '/w') {
-				mArray.shift();
-				var to = mArray.shift();
-				data.message = mArray.join(" ");
-				data.type = 'private';
-				
-				io.to(data.wSocketId).emit('chat message', data);
-				if(socket.id !== data.wSocketId){
-					data.recipient = "[ to: "+to+" ]";
-					io.to(socket.id).emit('chat message', data);
-				}
-			}else{
-				io.emit('chat message', data);
+
+		if (mArray[0] === '/w' && mArray.length > 2 && mArray.shift()) {
+			var to = mArray.shift();
+
+			data.message = mArray.join(" ");
+			data.type = 'private';
+
+			if(socket.id !== data.wSocketId){
+				data.recipient = "[ to: " + to + " ]";
+				io.to(socket.id).emit('chat message', data);
 			}
+
+			io.to(data.wSocketId).emit('chat message', data);
+
 		} else {
 			io.emit('chat message', data);
 		}
 
+	});
+
+	socket.on('get user', function(socketId) {
+		userMethods.retrieveModel.find({ 'socketId': socketId }, function(err, user) {
+			io.to(socket.id).emit('get user', user[0]);
+		});
 	});
 
 	socket.on('new user', function(msg) {
