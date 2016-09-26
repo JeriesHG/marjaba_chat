@@ -12,6 +12,7 @@
     "node_modules",
     "bower_components",
     "public/bower_components",
+    "app/client/bower_components",
     "test",
     "tests"
   ],
