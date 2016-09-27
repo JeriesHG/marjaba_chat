@@ -10,20 +10,17 @@ angular.module('chatApp').controller('socketController', ['$scope', 'socketFacto
 	$('#userModal').modal('show');
 
 	$scope.enterChat = function() {
-		var found = false;
-		for (var i = 0; i < $scope.participants.length; i++) {
-			if ($scope.participants[i].name == $scope.user) {
-				found = true;
-				break;
-			}
-		}
-		if (!found) {
+		var names = $scope.participants.map(function(o) { return o.name; });
+		var found = names.lastIndexOf($scope.user)  != -1;
+
+		// TODO: Add a boostrap alert
+		if (found) {
+			alert("Name taken!");
+		} else {
 			$socket.emit('new user', $scope.user);
 			$('#userModal').modal('hide');
-		} else {
-			alert("Name taken!");
+			
 		}
-
 	}
 
 	$scope.sendMessage = function() {
@@ -35,16 +32,17 @@ angular.module('chatApp').controller('socketController', ['$scope', 'socketFacto
 		}
 
 		$socket.emit('chat message', messageStruct);
-		$scope.message = '';
-		$scope.wSocketId = '';
 	}
 
 	$scope.sendPrivateMessage = function($event, socketId) {
-		let a = angular.element($event.currentTarget);
-		$scope.message = '/w ' + a[0].childNodes[3].innerHTML + ' ';
 		$scope.wSocketId = socketId;
-		$("[name='message']").focus();
+		$socket.emit('get user', socketId);
 	}
+
+	$socket.on('get user', function(id) {
+		$scope.message = '/w ' + id.name + ' ';		
+		$("[name='message']").focus();
+	});
 
 	$socket.on('new user', function(data) {
 		checkAndAddParticipant(data);
@@ -52,6 +50,8 @@ angular.module('chatApp').controller('socketController', ['$scope', 'socketFacto
 
 	$socket.on('chat message', function(msg) {
 		$scope.messages.push(msg);
+		$scope.message = '';
+		$scope.wSocketId = '';
 	});
 
 	$socket.on('load participants', function(data) {
@@ -69,16 +69,10 @@ angular.module('chatApp').controller('socketController', ['$scope', 'socketFacto
 	});
 
 	function checkAndAddParticipant(data) {
-		var found = false;
-		for (var i = 0; i < $scope.participants.length; i++) {
-			if ($scope.participants[i].name == data.name) {
-				found = true;
-				break;
-			}
-		}
+		var names = $scope.participants.map(function(o) { return o.name; });
+		var found = names.lastIndexOf(data.name)  != -1;
 
-		if (!found) {
-			$scope.participants.push(data);
-		}
+		return ( !found && $scope.participants.push(data) );
 	}
+
 }]);
