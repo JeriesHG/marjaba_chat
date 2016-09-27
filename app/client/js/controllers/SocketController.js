@@ -55,13 +55,13 @@ angular.module('chatApp').controller('socketController', ['$scope', 'socketFacto
 	});
 
 	$socket.on('load participants', function(data) {
-		for (var i = 0; i < data.length; i++) {
+		for (let i = 0; i < data.length; i++) {
 			checkAndAddParticipant(data[i]);
 		}
 	});
 
 	$socket.on('exit chat', function(socketId) {
-		for (i = $scope.participants.length - 1; i >= 0; i -= 1) {
+		for (let i = $scope.participants.length - 1; i >= 0; i -= 1) {
 			if ($scope.participants[i].socketId === socketId) {
 				$scope.participants.splice(i, 1);
 			}
