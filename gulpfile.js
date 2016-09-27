@@ -2,7 +2,6 @@ const _ = require('lodash');
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const livereload = require('gulp-livereload');
-const server = require('gulp-develop-server');
 const browserify = require('browserify');
 const babel = require('gulp-babel');
 const uglify = require('gulp-uglify');
@@ -20,7 +19,7 @@ const plugins = gulpLoadPlugins({
 const paths = {};
 paths.src = {};
 paths.build = {};
-paths.entryScript = 'server';
+
 //===================================================================================
 //==================================== Asset Paths ==================================
 //===================================================================================
@@ -90,12 +89,6 @@ gulp.task('images', () => {
 		.pipe(livereload());
 });
 
-gulp.task('server:start', () => {
-	server.listen({
-		path: paths.entryScript
-	});
-});
-gulp.task('server:restart', server.restart);
 
 //===================================================================================
 //==================================== WATCHERS ==================================
@@ -110,9 +103,9 @@ gulp.task('watch', () => {
 	// Watch image files
 	gulp.watch(paths.src.images + '**/*', ['images']);
 	//server restart
-	gulp.watch(['./app.js'], ['server:restart']);
-	gulp.watch(['./app/client/**/*.js'], ['server:restart']);
+	gulp.watch(['./app.js']);
+	gulp.watch(['./app/client/**/*.js']);
 });
 
 //Tasks
-gulp.task('default', ['scripts', 'uglify', 'sass', 'images', 'server:start', 'watch']);
+gulp.task('default', ['scripts', 'uglify', 'sass', 'images', 'watch']);
