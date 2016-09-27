@@ -11,8 +11,8 @@ mongoose.connect('mongodb://localhost/');
 // var _0xe2ba=["\x6D\x6F\x6E\x67\x6F\x64\x62\x3A\x2F\x2F\x61\x64\x6D\x69\x6E\x3A\x61\x64\x6D\x69\x6E\x40\x64\x73\x30\x32\x33\x34\x33\x35\x2E\x6D\x6C\x61\x62\x2E\x63\x6F\x6D\x3A\x32\x33\x34\x33\x35\x2F\x68\x65\x72\x6F\x6B\x75\x5F\x6B\x39\x68\x77\x70\x66\x6E\x33","\x63\x6F\x6E\x6E\x65\x63\x74"];mongoose[_0xe2ba[1]](_0xe2ba[0],function(_0x56efx1){if(_0x56efx1){throw _0x56efx1}});
 
 //Get Save Methods
-var UserMethods = require('./app/UserMethods');
-var userMethods = new UserMethods();
+var UserHelper = require('./app/server/helpers/UserHelper');
+var userHelper = new UserHelper();
 
 //CONFIGURATIONS
 // app.set('views', path.join(__dirname, 'app', 'client', 'views'));
@@ -27,7 +27,7 @@ app.get('*', function(req, res) {
 io.on('connection', function(socket) {
 	console.log('a user connected');
 
-	userMethods.retrieveModel.find(function(err, users) {
+	userHelper.retrieveModel.find(function(err, users) {
 		if (!err) {
 			io.emit('load participants', users);
 		}
@@ -57,7 +57,7 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('get user', function(socketId) {
-		userMethods.retrieveModel.find({ 'socketId': socketId }, function(err, user) {
+		userHelper.retrieveModel.find({ 'socketId': socketId }, function(err, user) {
 			io.to(socket.id).emit('get user', user[0]);
 		});
 	});
@@ -68,14 +68,14 @@ io.on('connection', function(socket) {
 			socketId: socket.id
 		};
 
-		userMethods.registerUser(user);
+		userHelper.registerUser(user);
 		io.emit('new user', user);
 
 	});
 
 	socket.on('disconnect', function() {
 		console.log('user disconnected');
-		userMethods.removeUser(socket.id);
+		userHelper.removeUser(socket.id);
 		io.emit('exit chat', socket.id);
 	});
 });

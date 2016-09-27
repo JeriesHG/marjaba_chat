@@ -1,8 +1,8 @@
 'use strict'
-module.exports = class UserMethods {
+module.exports = class UserHelper {
 
 	constructor() {
-		this.User = require('./models/User.js');
+		this.User = require('../models/User.js');
 	}
 
 	registerUser(msg) {
