@@ -1,5 +1,5 @@
-'use strict';
-const bower_components_path = 'app/client/bower_components';
+var bower_components_path = 'app/client/bower_components';
+
 module.exports = {
   client: {
     lib: {
@@ -19,14 +19,21 @@ module.exports = {
       'modules/*/client/css/*.css'
     ],
     sass: [
-      'modules/*/client/scss/*.scss'
-    ]
-    // js: [
-    //   'modules/core/client/app/config.js',
-    //   'modules/core/client/app/init.js',
-    //   'modules/*/client/*.js',
-    //   'modules/*/client/**/*.js'
-    // ],
-    // views: ['modules/*/client/views/**/*.html']
+        'modules/*/client/scss/*.scss'
+      ]
+      // js: [
+      //   'modules/core/client/app/config.js',
+      //   'modules/core/client/app/init.js',
+      //   'modules/*/client/*.js',
+      //   'modules/*/client/**/*.js'
+      // ],
+      // views: ['modules/*/client/views/**/*.html']
+  },
+  server: {
+    gulpConfig: 'gulpfile.js',
+    allJS: ['server.js', 'config/**/*.js', 'app/*/server/**/*.js'],
+    models: 'app/server/models/**/*.js',
+    routes: 'app/server/routes.js',
+    sockets: 'app/server/sockets/**/*.js',
   }
 };

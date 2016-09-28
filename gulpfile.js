@@ -90,6 +90,19 @@ gulp.task('images', () => {
 		.pipe(livereload());
 });
 
+// JS linting task
+gulp.task('jshint', function() {
+	var assets = _.union(
+		defaultAssets.server.gulpConfig,
+		defaultAssets.server.allJS
+	);
+
+	return gulp.src(assets)
+		.pipe(plugins.jshint())
+		.pipe(plugins.jshint.reporter('default'))
+		.pipe(plugins.jshint.reporter('fail'));
+});
+
 gulp.task('server:start', () => {
 	server.listen({
 		path: paths.entryScript
@@ -109,10 +122,11 @@ gulp.task('watch', () => {
 	gulp.watch(paths.src.sass + '**/*.scss', ['sass']);
 	// Watch image files
 	gulp.watch(paths.src.images + '**/*', ['images']);
+	gulp.watch(defaultAssets.server.allJS, ['server:restart']);
 	//server restart
 	gulp.watch(['./app.js'], ['server:restart']);
 	gulp.watch(['./app/client/**/*.js'], ['server:restart']);
 });
 
 //Tasks
-gulp.task('default', ['scripts', 'uglify', 'sass', 'images', 'server:start', 'watch']);
+gulp.task('default', ['jshint','scripts', 'uglify', 'sass', 'images', 'server:start', 'watch']);

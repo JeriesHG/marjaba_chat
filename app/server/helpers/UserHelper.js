@@ -22,21 +22,32 @@ module.exports = class UserHelper {
 		});
 	}
 
-	removeUser(socketId) {
-		this.User.find(function(error, users) {
+	removeUserBySocketId(socketId) {
+		this.User.find({
+			socketId: socketId
+		}, function(error, user) {
 			if (!error) {
-				for (var i = 0; i < users.length; i++) {
-					if (users[i].socketId === socketId) {
-						var deleteUser = users[i];
-						deleteUser.remove(function(error, result) {
-							if (error)
-								console.log(error);
-							else
-								console.log("Erased User");
-						});
-						break;
-					}
-				}
+				user.remove(function(error, result) {
+					if (error)
+						console.log(error);
+					else
+						console.log("Erased User");
+				});
+			}
+		});
+	}
+
+	removeUserByName(name) {
+		this.User.find({
+			name: name
+		}, function(error, user) {
+			if (!error) {
+				user.remove(function(error, result) {
+					if (error)
+						console.log(error);
+					else
+						console.log("Erased User");
+				});
 			}
 		});
 	}
