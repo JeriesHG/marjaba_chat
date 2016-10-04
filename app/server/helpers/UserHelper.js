@@ -27,7 +27,7 @@ module.exports = class UserHelper {
 			socketId: socketId
 		}, function(error, user) {
 			if (!error) {
-				user.remove(function(error, result) {
+				user[0].remove(function(error, result) {
 					if (error)
 						console.log(error);
 					else
@@ -42,7 +42,7 @@ module.exports = class UserHelper {
 			name: name
 		}, function(error, user) {
 			if (!error) {
-				user.remove(function(error, result) {
+				user[0].remove(function(error, result) {
 					if (error)
 						console.log(error);
 					else
