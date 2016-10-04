@@ -15,12 +15,7 @@
 	//CONFIGURATIONS
 	// app.set('views', path.join(__dirname, 'app', 'client', 'views'));
 	app.use(express.static(path.join(__dirname, 'app', 'client')));
-
-	//ROUTES
-	app.get('*', function(req, res) {
-		res.sendFile(path.join(__dirname, 'app', 'client', 'views', 'index.html'));
-	});
-
+	
 	//Initialize sockets
 	require("./app/server/sockets/sockets")(io);
 	//Initialize routes
