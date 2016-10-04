@@ -18,12 +18,10 @@ A very simple chat done with Angular, Node, MongoDB and Socket IO
 
 # Install Packages
 
-<code>bower install</code>
-<br/>
 <code>npm install</code>
 
 # Running the Proyect
-Mongo:
+Mongo (if you don't have mongo as a service):
 ```
 $ cd /data/db
 $ sudo mongod
@@ -31,7 +29,7 @@ $ sudo mongod
 Node:
 
 ```
-$ node server.js
+$ gulp
 ```
 
 # Contributing
