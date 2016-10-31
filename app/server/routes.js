@@ -13,6 +13,6 @@ module.exports = function(app) {
 
 	// routes to handle all angular requests
 	app.get('*', function(req, res) {
-		res.sendFile(path.join(__dirname, 'app', 'client', 'views', 'index.html'));
+		res.sendFile(path.join(__dirname, '../', 'client', 'views', 'index.html'));
 	});
 };
